@@ -1,5 +1,6 @@
 ---
-title: PDF AI Interaction Backend
+TASK 1: LLM-Powered AI Prototype
+title: PDF AI Interaction
 emoji: 📄
 colorFrom: blue
 colorTo: indigo
