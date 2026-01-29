@@ -1,5 +1,5 @@
----
 TASK 1: LLM-Powered AI Prototype
+---
 title: PDF AI Interaction
 emoji: 📄
 colorFrom: blue
@@ -108,3 +108,19 @@ The app will open at `http://localhost:3000`.
 ## 🛡️ License
 
 This project is open-source and available under the MIT License.
+
+## Workflow
+Upload PDF → Extract text (pdfplumber).
+Chunk text → Overlapping segments.
+Embed chunks → OpenAIEmbeddings or SentenceTransformers.
+Store in Vector DB → FAISS.
+User query → Embed query, retrieve top-k chunks.
+Prompt → Insert retrieved context into LLM prompt.
+Response → Display in Streamlit chat UI.
+
+## Design Choices
+LLM: GPT for reliability, LLaMA2 for cost/privacy.
+Vector DB: FAISS (fast, local) → Pinecone for enterprise scaling.
+Chunking: Overlap prevents broken sentences/context loss.
+Prompt: Source-grounded to reduce hallucination.
+UI: Streamlit for demo speed.
