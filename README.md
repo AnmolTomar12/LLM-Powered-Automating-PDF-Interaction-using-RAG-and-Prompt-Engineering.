@@ -1,13 +1,4 @@
-TASK 1: LLM-Powered AI Prototype
-
----
-title: PDF AI Interaction
-emoji: 📄
-colorFrom: blue
-colorTo: indigo
-sdk: docker
-pinned: false
----
+## TASK 1: LLM-Powered AI Prototype
 
 # 📄 PDF AI Assistant
 
@@ -111,7 +102,7 @@ The app will open at `http://localhost:3000`.
 This project is open-source and available under the MIT License.
 
 ## Workflow
-Upload PDF → Extract text (pdfplumber).
+**Upload PDF → Extract text (pdfplumber).
 Chunk text → Overlapping segments.
 Embed chunks → OpenAIEmbeddings or SentenceTransformers.
 Store in Vector DB → FAISS.
