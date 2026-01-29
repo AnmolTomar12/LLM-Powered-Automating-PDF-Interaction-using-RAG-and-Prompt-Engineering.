@@ -19,6 +19,8 @@ A full-stack application that allows users to upload PDF documents and interact 
   - **Persistence**: Chat history is saved locally so you don't lose progress on refresh.
 - **Responsive Design**: Beautiful, modern UI with gradient styling.
 
+### 🚀 Live Demo 👉 [Try the app here](https://your-render-app.onrender.com
+
 ## 🛠️ Tech Stack
 
 ### Backend
@@ -116,3 +118,124 @@ Vector DB: FAISS (fast, local) → Pinecone for enterprise scaling.
 Chunking: Overlap prevents broken sentences/context loss.
 Prompt: Source-grounded to reduce hallucination.
 UI: Streamlit for demo speed.
+
+### Add Requirement files.
+**streamlit**
+**langchain**
+**openai**
+**faiss-cpu**
+**PyPDF2**
+**pdfplumber**
+
+### Project Structure 
+├── app.py              # Streamlit/FastAPI entry point
+├── requirements.txt    # Dependencies
+├── README.md           # Documentation
+├── /docs               # Architecture diagrams, notes
+└── /src                # Core code (chunking, embeddings, RAG pipeline)
+
+## Add Architecture Diagram
+[PDF Upload] → [Chunking] → [Embeddings → Vector DB] → [Retriever] → [LLM] → [UI]
+
+### Workflow 1. **Upload PDF** → Extract text (`pdfplumber` / `PyPDF2`). 2. **Chunking** → Sliding window (~1000 characters, 200 overlap). 3. **Embeddings** → `OpenAIEmbeddings` or `SentenceTransformers`. 4. **Vector DB** → FAISS for local storage. 5. **Query** → Embed user query, retrieve top-k chunks. 6. **Prompt Engineering** → Insert retrieved context into LLM prompt. 7. **Response** → Display in Streamlit chat UI. ### Design Choices - **LLM**: GPT for reliability; LLaMA2/Mistral for cost/privacy. - **Vector DB**: FAISS (fast, local) → Pinecone for production scaling. - **Chunking**: Overlap prevents broken context. - **Prompt Engineering**: Source-grounded, avoids hallucination. - **UI**: Streamlit for rapid prototyping.
+
+## 🛡️ Task 2: Hallucination & Quality Control
+
+### Causes of Hallucination
+- LLMs may generate confident but incorrect answers when:
+  - Context is missing or incomplete.
+  - Retrieval returns irrelevant chunks.
+  - Prompts are ambiguous or unconstrained.
+
+### Guardrails Implemented
+1. **Confidence Thresholds**  
+   - Responses are only generated if similarity score > threshold.  
+   - Otherwise, the system replies: *“Not found in document.”*
+
+2. **Source-Grounded Answers**  
+   - All answers are explicitly tied to retrieved chunks.  
+   - Prompt constraint: *“Use only the provided context. Do not invent information.”*
+
+3. **Prompt Constraints**  
+   - Instructions force the model to avoid speculation.  
+   - Example: *“If unsure, say ‘Not found in document.’”*
+
+### Example of Improved Responses
+- **Before (Hallucination)**:  
+  *“The company was founded in 1990.”*  
+- **After (Guardrail Applied)**:  
+  *“The founding year is not mentioned in the document. Closest reference is early operations.”*
+
+---
+
+## ⚡ Task 3: Rapid Iteration Challenge
+
+### Advanced Capability: Multi-Document Reasoning
+**Why chosen**: Real-world use cases often involve multiple PDFs (contracts, resumes, reports).  
+**Implementation**:  
+- Ingest multiple PDFs → Merge embeddings into one vector DB.  
+- Retrieval → Query across all documents simultaneously.  
+- Prompt → Include source identifiers (e.g., Doc A, Doc B).  
+
+**Trade-offs**:
+- ✅ Richer, enterprise-ready answers.  
+- ❌ Higher compute cost and retrieval complexity.  
+- 🔒 Limitation: Requires metadata filtering for relevance.
+
+---
+
+## 🏢 Task 4: AI System Architecture
+
+### Enterprise Assistant Design
+
+**Components:**
+- **Data Ingestion**: ETL pipeline (PDFs, docs, emails → text).  
+- **Vector DB Choice**: Pinecone/Weaviate for scalability and metadata filtering.  
+- **LLM Orchestration**: LangChain/LlamaIndex for RAG pipeline management.  
+- **Cost Control**:  
+  - Cache embeddings.  
+  - Use smaller LLM for retrieval, larger LLM for final answer.  
+- **Monitoring & Evaluation**:  
+  - Track query success rate.  
+  - Log hallucinations.  
+  - Human feedback loop for continuous improvement.
+
+### Architecture Diagram
+[Data Sources: PDFs, Docs, Emails]
+        ↓
+ [ETL + Chunking]
+        ↓
+ [Embeddings → Vector DB (Pinecone)]
+        ↓
+ [Retriever → Top-k Chunks]
+        ↓
+ [LLM Orchestration (LangChain)]
+        ↓
+ [Response Generation + Guardrails]
+        ↓
+ [UI Layer (Streamlit / FastAPI)]
+        ↓
+ [Monitoring + Feedback Loop]
+
+### Project Structure
+├── app.py              # Streamlit app entry point
+├── requirements.txt    # Dependencies
+├── README.md           # Documentation
+├── /docs               # Architecture diagrams, notes
+└── /src                # Core code (chunking, embeddings, RAG pipeline)
+
+---
+
+## ✨ Features
+- LLM-powered PDF Q&A  
+- RAG with FAISS  
+- Chunking strategy  
+- Guardrails against hallucination  
+- Multi-document reasoning  
+- Enterprise-ready architecture  
+
+---
+
+## 📝 Author
+**Anmol Tomar** – MCA AIML, 590019134  
+Focus: LLMs, RAG, NLP, and enterprise AI systems.
