@@ -103,31 +103,59 @@ The app will open at `http://localhost:3000`.
 
 This project is open-source and available under the MIT License.
 
-## Workflow
-**Upload PDF → Extract text (pdfplumber).
-Chunk text → Overlapping segments.
-Embed chunks → OpenAIEmbeddings or SentenceTransformers.
-Store in Vector DB → FAISS.
-User query → Embed query, retrieve top-k chunks.
-Prompt → Insert retrieved context into LLM prompt.
-Response → Display in Streamlit chat UI.
+## 🔄 Workflow
 
-## Design Choices
-LLM: GPT for reliability, LLaMA2 for cost/privacy.
-Vector DB: FAISS (fast, local) → Pinecone for enterprise scaling.
-Chunking: Overlap prevents broken sentences/context loss.
-Prompt: Source-grounded to reduce hallucination.
-UI: Streamlit for demo speed.
+Think of the system as a **conversation pipeline** where your PDF transforms into an interactive knowledge base. Here’s how the magic happens:
 
-### Add Requirement files.
-**streamlit**
-**langchain**
-**openai**
-**faiss-cpu**
-**PyPDF2**
-**pdfplumber**
+1. 📤 **Upload PDF** → User uploads a document.  
+2. 📑 **Text Extraction** → Content is extracted using `pdfplumber` / `PyPDF2`.  
+3. ✂️ **Chunking** → Text is split into overlapping segments (~1000 characters, 200 overlap) to preserve context.  
+4. 🧠 **Embeddings** → Each chunk is converted into dense vectors using `OpenAIEmbeddings` or `SentenceTransformers`.  
+5. 🗂️ **Vector Database** → Embeddings are stored in **FAISS** (local) or **Pinecone** (scalable cloud).  
+6. ❓ **User Query** → Query is embedded and matched against the most relevant chunks.  
+7. 📝 **Prompt Engineering** → Retrieved context is inserted into a carefully designed prompt.  
+8. 🤖 **LLM Response** → GPT (or LLaMA2/Mistral) generates an answer grounded in the PDF.  
+9. 💬 **UI Display** → Streamlit chat interface shows the response with conversational flow.  
 
-### Project Structure 
+---
+
+## 🎨 Design Choices
+
+- **LLM**:  
+  - 🟢 *OpenAI GPT* → Reliable, strong reasoning.  
+  - 🟡 *LLaMA2/Mistral* → Cost-effective, privacy-friendly alternatives.  
+
+- **Vector DB**:  
+  - ⚡ *FAISS* → Fast, local prototyping.  
+  - ☁️ *Pinecone* → Enterprise scaling with metadata filtering.  
+
+- **Chunking Strategy**:  
+  - Sliding window with overlap ensures no sentence or context is cut off mid-thought.  
+
+- **Prompt Engineering**:  
+  - Source-grounded prompts reduce hallucination.  
+  - Explicit instructions: *“If unsure, say ‘Not found in document.’”*  
+
+- **UI**:  
+  - 🚀 *Streamlit* → Rapid prototyping with minimal setup.  
+  - 🔗 *FastAPI* → Optional REST endpoints for production integration.  
+
+---
+
+## 📦 Requirements
+
+##Add the following dependencies to `requirements.txt`:
+
+```txt
+streamlit
+langchain
+openai
+faiss-cpu
+PyPDF2
+pdfplumber
+
+### Project Structure
+
 ├── app.py              # Streamlit/FastAPI entry point
 ├── requirements.txt    # Dependencies
 ├── README.md           # Documentation
@@ -136,8 +164,6 @@ UI: Streamlit for demo speed.
 
 ## Add Architecture Diagram
 [PDF Upload] → [Chunking] → [Embeddings → Vector DB] → [Retriever] → [LLM] → [UI]
-
-### Workflow 1. **Upload PDF** → Extract text (`pdfplumber` / `PyPDF2`). 2. **Chunking** → Sliding window (~1000 characters, 200 overlap). 3. **Embeddings** → `OpenAIEmbeddings` or `SentenceTransformers`. 4. **Vector DB** → FAISS for local storage. 5. **Query** → Embed user query, retrieve top-k chunks. 6. **Prompt Engineering** → Insert retrieved context into LLM prompt. 7. **Response** → Display in Streamlit chat UI. ### Design Choices - **LLM**: GPT for reliability; LLaMA2/Mistral for cost/privacy. - **Vector DB**: FAISS (fast, local) → Pinecone for production scaling. - **Chunking**: Overlap prevents broken context. - **Prompt Engineering**: Source-grounded, avoids hallucination. - **UI**: Streamlit for rapid prototyping.
 
 ## 🛡️ Task 2: Hallucination & Quality Control
 
