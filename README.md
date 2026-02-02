@@ -1,5 +1,3 @@
-## TASK 1: LLM-Powered AI Prototype
-
 # 📄 PDF AI Assistant
 
 A full-stack application that allows users to upload PDF documents and interact with them using natural language. Built with **FastAPI**, **React**, **LangChain**, and **Hugging Face**.
@@ -165,8 +163,6 @@ pdfplumber
 ## Add Architecture Diagram
 [PDF Upload] → [Chunking] → [Embeddings → Vector DB] → [Retriever] → [LLM] → [UI]
 
-## 🛡️ Task 2: Hallucination & Quality Control
-
 ### Causes of Hallucination
 - LLMs may generate confident but incorrect answers when:
   - Context is missing or incomplete.
@@ -192,10 +188,6 @@ pdfplumber
 - **After (Guardrail Applied)**:  
   *“The founding year is not mentioned in the document. Closest reference is early operations.”*
 
----
-
-## ⚡ Task 3: Rapid Iteration Challenge
-
 ### Advanced Capability: Multi-Document Reasoning
 **Why chosen**: Real-world use cases often involve multiple PDFs (contracts, resumes, reports).  
 **Implementation**:  
@@ -209,9 +201,6 @@ pdfplumber
 - 🔒 Limitation: Requires metadata filtering for relevance.
 
 ---
-
-## 🏢 Task 4: AI System Architecture
-
 ### Enterprise Assistant Design
 
 **Components:**
